@@ -1,0 +1,14 @@
+{
+  "id": "{454FB849-89BC-483A-B3C7-CAD87EAA4AD0}",
+  "name": "IPS2AmazonFireTV",
+  "type": 3,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2AmazonFireTV"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "FireTV"
+}
