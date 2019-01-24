@@ -45,7 +45,7 @@ class IPS2AmazonFireTV extends IPSModule
 				
 				$this->SetStatus(102);
 				If ($this->ConnectionTest() == true) {
-					$tihs->StartADB();
+					$this->StartADB();
 				}
 			}
 			else {
