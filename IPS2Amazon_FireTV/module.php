@@ -503,16 +503,29 @@ class IPS2AmazonFireTV extends IPSModule
 		$command = "83"; // Keycode Notification
 		$this->Send_Key($command);
 	}
+	
 	public function Key_Search()
 	{
 		$command = "84"; // Keycode Search
 		$this->Send_Key($command);
 	}
+	
 	public function Tag_Last_Keycode()
 	{
 		$command = "85"; // tag last keycode
 		$this->Send_Key($command);
 	}
+	
+	public function StartNetflix()
+	{
+		shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+	}
+	
+	public function StopNetflix()
+	{
+		shell_exec("adb shell am force-stop com.netflix.ninja");
+	}
+	
 	private function Send_Key($command)
 	{
 		shell_exec("adb shell input keyevent ".$command);
