@@ -56,10 +56,10 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	private function StartADB()
 	{
-		$IP = $this->ReadPropertyString('IP');
+		$IPAddress = $this->ReadPropertyString("IPAddress");
 		shell_exec("adb start-server");  //Start Server
 		IPS_Sleep(1500);
-		shell_exec("adb connect " . $ip);  //Connect FireTV
+		shell_exec("adb connect ".$IPAddress);  //Connect FireTV
 	}
 	
 	public function RequestAction($Ident, $Value) 
