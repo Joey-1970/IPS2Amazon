@@ -45,7 +45,7 @@ class IPS2AmazonFireTV extends IPSModule
 				
 				$this->SetStatus(102);
 				If ($this->ConnectionTest() == true) {
-					
+					$tihs->StartADB();
 				}
 			}
 			else {
@@ -54,12 +54,469 @@ class IPS2AmazonFireTV extends IPSModule
 		}
 	}
 	
+	private function StartADB()
+	{
+		$IP = $this->ReadPropertyString('IP');
+		shell_exec("adb start-server");  //Start Server
+		IPS_Sleep(1500);
+		shell_exec("adb connect " . $ip);  //Connect FireTV
+	}
+	
 	public function RequestAction($Ident, $Value) 
 	{
   		
 		
 	}
 	
+	public function Up()
+	{
+		$command = "19"; // Up
+		$this->Send_Key($command);
+	}
+	public function Down()
+	{
+		$command = "20"; // Down
+		$this->Send_Key($command);
+	}
+	public function Left()
+	{
+		$command = "21"; // Left
+		$this->Send_Key($command);
+	}
+	public function Right()
+	{
+		$command = "22"; // Right
+		$this->Send_Key($command);
+	}
+	public function Enter()
+	{
+		$command = "66"; // Enter
+		$this->Send_Key($command);
+	}
+	public function Back()
+	{
+		$command = "4"; // Back
+		$this->Send_Key($command);
+	}
+	public function Home()
+	{
+		$command = "3"; // Home
+		$this->Send_Key($command);
+	}
+	public function Menu()
+	{
+		$alternative_menu = $this->ReadPropertyBoolean("alternative_menu");
+		if ($alternative_menu) {
+			$command = "1";
+		} else {
+			$command = "82";
+		}
+		$this->Send_Key($command);
+	}
+	public function Play()
+	{
+		$command = "85"; // Play / Pause
+		$this->Send_Key($command);
+	}
+	public function Previous()
+	{
+		$command = "88"; // Previous
+		$this->Send_Key($command);
+	}
+	public function Next()
+	{
+		$command = "87"; // Next
+		$this->Send_Key($command);
+	}
+	public function Soft_Right()
+	{
+		$command = "2"; // Soft Right
+		$this->Send_Key($command);
+	}
+	public function Call()
+	{
+		$command = "5"; // Call
+		$this->Send_Key($command);
+	}
+	public function Endcall()
+	{
+		$command = "6"; // Endcall
+		$this->Send_Key($command);
+	}
+	public function Key_0()
+	{
+		$command = "7"; // Keycode 0
+		$this->Send_Key($command);
+	}
+	public function Key_1()
+	{
+		$command = "8"; // Keycode 1
+		$this->Send_Key($command);
+	}
+	public function Key_2()
+	{
+		$command = "9"; // Keycode 2
+		$this->Send_Key($command);
+	}
+	public function Key_3()
+	{
+		$command = "10"; // Keycode 3
+		$this->Send_Key($command);
+	}
+	public function Key_4()
+	{
+		$command = "11"; // Keycode 4
+		$this->Send_Key($command);
+	}
+	public function Key_5()
+	{
+		$command = "12"; // Keycode 5
+		$this->Send_Key($command);
+	}
+	public function Key_6()
+	{
+		$command = "13"; // Keycode 6
+		$this->Send_Key($command);
+	}
+	public function Key_7()
+	{
+		$command = "14"; // Keycode 7
+		$this->Send_Key($command);
+	}
+	public function Key_8()
+	{
+		$command = "15"; // Keycode 8
+		$this->Send_Key($command);
+	}
+	public function Key_9()
+	{
+		$command = "16"; // Keycode 9
+		$this->Send_Key($command);
+	}
+	public function Key_Star()
+	{
+		$command = "17"; // Star
+		$this->Send_Key($command);
+	}
+	public function Key_Pound()
+	{
+		$command = "18"; // Pound
+		$this->Send_Key($command);
+	}
+	public function Center()
+	{
+		$command = "23"; // Center
+		$this->Send_Key($command);
+	}
+	public function Volume_Up()
+	{
+		$command = "24"; // Volume up
+		$this->Send_Key($command);
+	}
+	public function Volume_Down()
+	{
+		$command = "25"; // Volume down
+		$this->Send_Key($command);
+	}
+	public function Power()
+	{
+		$command = "26"; // Power
+		$this->Send_Key($command);
+	}
+	public function Camera()
+	{
+		$command = "27"; // Camera
+		$this->Send_Key($command);
+	}
+	public function Clear()
+	{
+		$command = "28"; // Clear
+		$this->Send_Key($command);
+	}
+	public function Key_A()
+	{
+		$command = "29"; // Keycode A
+		$this->Send_Key($command);
+	}
+	public function Key_B()
+	{
+		$command = "30"; // Keycode B
+		$this->Send_Key($command);
+	}
+	public function Key_C()
+	{
+		$command = "31"; // Keycode C
+		$this->Send_Key($command);
+	}
+	public function Key_D()
+	{
+		$command = "32"; // Keycode D
+		$this->Send_Key($command);
+	}
+	public function Key_E()
+	{
+		$command = "33"; // Keycode E
+		$this->Send_Key($command);
+	}
+	public function Key_F()
+	{
+		$command = "34"; // Keycode F
+		$this->Send_Key($command);
+	}
+	public function Key_G()
+	{
+		$command = "35"; // Keycode G
+		$this->Send_Key($command);
+	}
+	public function Key_H()
+	{
+		$command = "36"; // Keycode H
+		$this->Send_Key($command);
+	}
+	public function Key_I()
+	{
+		$command = "37"; // Keycode I
+		$this->Send_Key($command);
+	}
+	public function Key_J()
+	{
+		$command = "38"; // Keycode J
+		$this->Send_Key($command);
+	}
+	public function Key_K()
+	{
+		$command = "39"; // Keycode K
+		$this->Send_Key($command);
+	}
+	public function Key_L()
+	{
+		$command = "40"; // Keycode L
+		$this->Send_Key($command);
+	}
+	public function Key_M()
+	{
+		$command = "41"; // Keycode M
+		$this->Send_Key($command);
+	}
+	public function Key_N()
+	{
+		$command = "42"; // Keycode N
+		$this->Send_Key($command);
+	}
+	public function Key_O()
+	{
+		$command = "43"; // Keycode O
+		$this->Send_Key($command);
+	}
+	public function Key_P()
+	{
+		$command = "44"; // Keycode P
+		$this->Send_Key($command);
+	}
+	public function Key_Q()
+	{
+		$command = "45"; // Keycode Q
+		$this->Send_Key($command);
+	}
+	public function Key_R()
+	{
+		$command = "46"; // Keycode R
+		$this->Send_Key($command);
+	}
+	public function Key_S()
+	{
+		$command = "47"; // Keycode S
+		$this->Send_Key($command);
+	}
+	public function Key_T()
+	{
+		$command = "48"; // Keycode T
+		$this->Send_Key($command);
+	}
+	public function Key_U()
+	{
+		$command = "49"; // Keycode U
+		$this->Send_Key($command);
+	}
+	public function Key_V()
+	{
+		$command = "50"; // Keycode V
+		$this->Send_Key($command);
+	}
+	public function Key_W()
+	{
+		$command = "51"; // Keycode W
+		$this->Send_Key($command);
+	}
+	public function Key_X()
+	{
+		$command = "52"; // Keycode X
+		$this->Send_Key($command);
+	}
+	public function Key_Y()
+	{
+		$command = "53"; // Keycode Y
+		$this->Send_Key($command);
+	}
+	public function Key_Z()
+	{
+		$command = "54"; // Keycode Z
+		$this->Send_Key($command);
+	}
+	public function Key_Comma()
+	{
+		$command = "55"; // Keycode Comma
+		$this->Send_Key($command);
+	}
+	public function Key_Period()
+	{
+		$command = "56"; // Keycode Period
+		$this->Send_Key($command);
+	}
+	public function Key_Alt_Left()
+	{
+		$command = "57"; // Keycode Alt Left
+		$this->Send_Key($command);
+	}
+	public function Key_Alt_Right()
+	{
+		$command = "58"; // Keycode Alt Right
+		$this->Send_Key($command);
+	}
+	public function Key_Shift_Left()
+	{
+		$command = "59"; // Keycode Shift Left
+		$this->Send_Key($command);
+	}
+	public function Key_Shift_Right()
+	{
+		$command = "60"; // Keycode Shift Right
+		$this->Send_Key($command);
+	}
+	public function Key_Tab()
+	{
+		$command = "61"; // Keycode Tab
+		$this->Send_Key($command);
+	}
+	public function Key_Space()
+	{
+		$command = "62"; // Keycode Space
+		$this->Send_Key($command);
+	}
+	public function Key_Sym()
+	{
+		$command = "63"; // Keycode Sym
+		$this->Send_Key($command);
+	}
+	public function Key_Explorer()
+	{
+		$command = "64"; // Keycode Explorer
+		$this->Send_Key($command);
+	}
+	public function Key_Envelope()
+	{
+		$command = "65"; // Keycode Envelope
+		$this->Send_Key($command);
+	}
+	public function Key_Enter()
+	{
+		$command = "66"; // Keycode Enter
+		$this->Send_Key($command);
+	}
+	public function Key_Del()
+	{
+		$command = "67"; // Keycode Del
+		$this->Send_Key($command);
+	}
+	public function Key_Grave()
+	{
+		$command = "68"; // Keycode Grave
+		$this->Send_Key($command);
+	}
+	public function Key_Minus()
+	{
+		$command = "69"; // Keycode Minus
+		$this->Send_Key($command);
+	}
+	public function Key_Equals()
+	{
+		$command = "70"; // Keycode Equals
+		$this->Send_Key($command);
+	}
+	public function Key_Left_Bracket()
+	{
+		$command = "71"; // Keycode Left Bracket
+		$this->Send_Key($command);
+	}
+	public function Key_Right_Bracket()
+	{
+		$command = "72"; // Keycode Right Bracket
+		$this->Send_Key($command);
+	}
+	public function Key_Backslash()
+	{
+		$command = "73"; // Keycode Backslash
+		$this->Send_Key($command);
+	}
+	public function Key_Semicolon()
+	{
+		$command = "74"; // Keycode Semicolon
+		$this->Send_Key($command);
+	}
+	public function Key_Apostrophe()
+	{
+		$command = "75"; // Keycode Apostrophe
+		$this->Send_Key($command);
+	}
+	public function Key_Slash()
+	{
+		$command = "76"; // Keycode Slash
+		$this->Send_Key($command);
+	}
+	public function Key_At()
+	{
+		$command = "77"; // Keycode At
+		$this->Send_Key($command);
+	}
+	public function Key_Num()
+	{
+		$command = "78"; // Keycode Num
+		$this->Send_Key($command);
+	}
+	public function Key_Headsethook()
+	{
+		$command = "79"; // Keycode Heatsethook
+		$this->Send_Key($command);
+	}
+	public function Key_Focus()
+	{
+		$command = "80"; // Keycode Focus
+		$this->Send_Key($command);
+	}
+	public function Key_Plus()
+	{
+		$command = "81"; // Keycode Plus
+		$this->Send_Key($command);
+	}
+	public function Key_Notification()
+	{
+		$command = "83"; // Keycode Notification
+		$this->Send_Key($command);
+	}
+	public function Key_Search()
+	{
+		$command = "84"; // Keycode Search
+		$this->Send_Key($command);
+	}
+	public function Tag_Last_Keycode()
+	{
+		$command = "85"; // tag last keycode
+		$this->Send_Key($command);
+	}
+	private function Send_Key($command)
+	{
+		shell_exec("adb shell input keyevent ".$command);
+	}
 	
 	
 	private function ConnectionTest()
