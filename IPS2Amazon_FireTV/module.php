@@ -17,9 +17,17 @@ class IPS2AmazonFireTV extends IPSModule
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 3, "Down", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 4, "Right", "Information", -1);
 		
+		$this->RegisterProfileInteger("AmazonFireTV.Action", "Information", "", "", 0, 4, 0);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 0, "<<", "Information", -1);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 1, ">||", "Information", 0x00FF00);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 2, ">>", "Information", -1);
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
 		$this->EnableAction("DirectionPad");
+		
+		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 20);
+		$this->EnableAction("Action");
 	}
 	
 	public function GetConfigurationForm() { 
@@ -47,6 +55,7 @@ class IPS2AmazonFireTV extends IPSModule
 		parent::ApplyChanges();
 		
 		SetValueInteger($this->GetIDForIdent("DirectionPad"), 2);
+		SetValueInteger($this->GetIDForIdent("Action"), 1);
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			If ($this->ReadPropertyBoolean("Open") == true) {
@@ -77,28 +86,43 @@ class IPS2AmazonFireTV extends IPSModule
 				case "DirectionPad":
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
 					If ($Value == 0) {
-							// Left
-							$this->Send_Key("21");
-						}
-						elseIf ($Value == 1) {
-							// Up
-							$this->Send_Key("19");
-						}
-						elseIf ($Value == 2) {
-							// Select
-							$this->Send_Key("66");
-						}
-						elseIf ($Value == 3) {
-							// Down
-							$this->Send_Key("20");
-						}
-						elseIf ($Value == 4) {
-							// Right
-							$this->Send_Key("22");
-						}
-						SetValueInteger($this->GetIDForIdent($Ident), 2);
+						// Left
+						$this->Send_Key("21");
+					}
+					elseIf ($Value == 1) {
+						// Up
+						$this->Send_Key("19");
+					}
+					elseIf ($Value == 2) {
+						// Select
+						$this->Send_Key("66");
+					}
+					elseIf ($Value == 3) {
+						// Down
+						$this->Send_Key("20");
+					}
+					elseIf ($Value == 4) {
+						// Right
+						$this->Send_Key("22");
+					}
+					SetValueInteger($this->GetIDForIdent($Ident), 2);
 					break;
-						
+				case "Action":
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
+						// <<
+						$this->Send_Key("88");
+					}
+					elseIf ($Value == 1) {
+						// >||
+						$this->Send_Key("85");
+					}
+					elseIf ($Value == 2) {
+						// >>
+						$this->Send_Key("87");
+					}
+					SetValueInteger($this->GetIDForIdent($Ident), 1);
+					break;	
 				
 				default:
 				    throw new Exception("Invalid Ident");
