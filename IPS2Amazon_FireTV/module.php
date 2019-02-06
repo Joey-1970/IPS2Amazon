@@ -69,8 +69,36 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	public function RequestAction($Ident, $Value) 
 	{
-  		
-		
+  		If ($this->ReadPropertyBoolean("Open") == true) {
+			switch($Ident) {
+				case "DirectionPad":
+						If ($Value == 0) {
+							// Left
+							$this->Send_Key("21");
+						}
+						elseIf ($Value == 1) {
+							// Up
+							$this->Send_Key("19");
+						}
+						elseIf ($Value == 2) {
+							// Select
+							$this->Send_Key("66");
+						}
+						elseIf ($Value == 3) {
+							// Down
+							$this->Send_Key("20");
+						}
+						elseIf ($Value == 4) {
+							// Right
+							$this->Send_Key("22");
+						}
+					break;
+						
+				
+				default:
+				    throw new Exception("Invalid Ident");
+			}
+		}
 	}
 	
 	public function Up()
