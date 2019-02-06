@@ -10,7 +10,7 @@ class IPS2AmazonFireTV extends IPSModule
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		
 		// Profile anlegen
-		$this->RegisterProfileInteger("AmazonFireTV.DirectionPad", "Information", "", "", 0, 4, 1);
+		$this->RegisterProfileInteger("AmazonFireTV.DirectionPad", "Information", "", "", 0, 4, 0);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 0, "Left", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 1, "Up", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 2, "Select", "Information", 0x00FF00);
