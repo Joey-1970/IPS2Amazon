@@ -19,6 +19,7 @@ class IPS2AmazonFireTV extends IPSModule
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
+		$this->EnableAction("DirectionPad");
 	}
 	
 	public function GetConfigurationForm() { 
@@ -44,6 +45,8 @@ class IPS2AmazonFireTV extends IPSModule
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
+		
+		SetValueInteger($this->GetIDForIdent("DirectionPad"), 2);
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			If ($this->ReadPropertyBoolean("Open") == true) {
@@ -72,7 +75,8 @@ class IPS2AmazonFireTV extends IPSModule
   		If ($this->ReadPropertyBoolean("Open") == true) {
 			switch($Ident) {
 				case "DirectionPad":
-						If ($Value == 0) {
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
 							// Left
 							$this->Send_Key("21");
 						}
@@ -92,6 +96,7 @@ class IPS2AmazonFireTV extends IPSModule
 							// Right
 							$this->Send_Key("22");
 						}
+						SetValueInteger($this->GetIDForIdent($Ident), 2);
 					break;
 						
 				
