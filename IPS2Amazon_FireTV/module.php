@@ -63,6 +63,7 @@ class IPS2AmazonFireTV extends IPSModule
 		parent::ApplyChanges();
 		
 		SetValueInteger($this->GetIDForIdent("DirectionPad"), 2);
+		SetValueInteger($this->GetIDForIdent("Basic"), 1);
 		SetValueInteger($this->GetIDForIdent("Action"), 1);
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
