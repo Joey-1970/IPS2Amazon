@@ -34,7 +34,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterVariableInteger("Basic", "Basic", "AmazonFireTV.Basic", 20);
 		$this->EnableAction("Basic");
 		
-		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 20);
+		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 30);
 		$this->EnableAction("Action");
 	}
 	
