@@ -17,6 +17,11 @@ class IPS2AmazonFireTV extends IPSModule
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 3, "Down", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 4, "Right", "Information", -1);
 		
+		$this->RegisterProfileInteger("AmazonFireTV.Basic", "Information", "", "", 0, 4, 0);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Basic", 0, "Back", "Information", -1);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Basic", 1, "Home", "Information", 0x00FF00);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Basic", 2, "Menu", "Information", -1);
+		
 		$this->RegisterProfileInteger("AmazonFireTV.Action", "Information", "", "", 0, 4, 0);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 0, "<<", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 1, ">||", "Information", 0x00FF00);
@@ -25,6 +30,9 @@ class IPS2AmazonFireTV extends IPSModule
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
 		$this->EnableAction("DirectionPad");
+		
+		$this->RegisterVariableInteger("Basic", "Basic", "AmazonFireTV.Basic", 20);
+		$this->EnableAction("Basic");
 		
 		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 20);
 		$this->EnableAction("Action");
@@ -123,7 +131,22 @@ class IPS2AmazonFireTV extends IPSModule
 					}
 					SetValueInteger($this->GetIDForIdent($Ident), 1);
 					break;	
-				
+				case "Basic":
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
+						// Back
+						$this->Send_Key("4");
+					}
+					elseIf ($Value == 1) {
+						// Home
+						$this->Send_Key("3");
+					}
+					elseIf ($Value == 2) {
+						// Menu
+						$this->Send_Key("1");
+					}
+					SetValueInteger($this->GetIDForIdent($Ident), 1);
+					break;	
 				default:
 				    throw new Exception("Invalid Ident");
 			}
