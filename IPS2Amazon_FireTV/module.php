@@ -27,6 +27,10 @@ class IPS2AmazonFireTV extends IPSModule
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 1, ">||", "Information", 0x00FF00);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Action", 2, ">>", "Information", -1);
 		
+		$this->RegisterProfileInteger("AmazonFireTV.Apps", "Information", "", "", 0, 4, 0);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 0, "Start Netflix", "Information", -1);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 1, "Stop Netflix", "Information", -1);
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
 		$this->EnableAction("DirectionPad");
@@ -36,6 +40,9 @@ class IPS2AmazonFireTV extends IPSModule
 		
 		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 30);
 		$this->EnableAction("Action");
+		
+		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 30);
+		$this->EnableAction("Apps");
 	}
 	
 	public function GetConfigurationForm() { 
