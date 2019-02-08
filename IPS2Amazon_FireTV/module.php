@@ -41,7 +41,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterVariableInteger("Action", "Action", "AmazonFireTV.Action", 30);
 		$this->EnableAction("Action");
 		
-		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 30);
+		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 40);
 		$this->EnableAction("Apps");
 	}
 	
@@ -154,6 +154,17 @@ class IPS2AmazonFireTV extends IPSModule
 						$this->Send_Key("1");
 					}
 					SetValueInteger($this->GetIDForIdent($Ident), 1);
+					break;
+				case "Apps":
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
+						// Start Netflix
+						shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+					}
+					elseIf ($Value == 1) {
+						// Stop Netflix
+						shell_exec("adb shell am force-stop com.netflix.ninja");
+					}
 					break;	
 				default:
 				    throw new Exception("Invalid Ident");
