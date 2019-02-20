@@ -168,7 +168,7 @@ class IPS2AmazonFireTV extends IPSModule
 					}
 					elseIf ($Value == 2) {
 						// Wake Up
-						shell_exec("adb shell input keyevent REFRESH");
+						shell_exec("adb shell input keyevent 26");
 					}
 					break;	
 				default:
