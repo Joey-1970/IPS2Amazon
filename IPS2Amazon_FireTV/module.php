@@ -30,6 +30,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterProfileInteger("AmazonFireTV.Apps", "Information", "", "", 0, 4, 0);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 0, "Start Netflix", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 1, "Stop Netflix", "Information", -1);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 2, "Wake Up", "Information", -1);
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
@@ -164,6 +165,10 @@ class IPS2AmazonFireTV extends IPSModule
 					elseIf ($Value == 1) {
 						// Stop Netflix
 						shell_exec("adb shell am force-stop com.netflix.ninja");
+					}
+					elseIf ($Value == 2) {
+						// Wake Up
+						shell_exec("adb shell input keyevent REFRESH");
 					}
 					break;	
 				default:
