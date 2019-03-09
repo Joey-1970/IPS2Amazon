@@ -74,26 +74,26 @@ class IPS2AmazonFireTV extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Basic"), 1);
 		SetValueInteger($this->GetIDForIdent("Action"), 1);
 		
-		If (IPS_GetKernelRunlevel() == 10103) {
-			If ($this->ReadPropertyBoolean("Open") == true) {
-				
-				$this->SetStatus(102);
-				If ($this->ConnectionTest() == true) {
-					$this->StartADB();
-				}
+		If ($this->ReadPropertyBoolean("Open") == true) {
+
+			$this->SetStatus(102);
+			If ($this->ConnectionTest() == true) {
+				$this->StartADB();
 			}
-			else {
-				$this->SetStatus(104);
-			}	   
 		}
+		else {
+			$this->SetStatus(104);
+		}	   
 	}
 	
 	private function StartADB()
 	{
 		$IPAddress = $this->ReadPropertyString("IPAddress");
-		shell_exec("adb start-server");  //Start Server
+		$Response = shell_exec("adb start-server");  //Start Server
+		$this->SendDebug("Start Server", $Response, 0);
 		IPS_Sleep(1500);
-		shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		$this->SendDebug("Connect FireTV", $Response, 0);
 	}
 	
 	public function RequestAction($Ident, $Value) 
@@ -160,15 +160,18 @@ class IPS2AmazonFireTV extends IPSModule
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
 					If ($Value == 0) {
 						// Start Netflix
-						shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+						$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+						$this->SendDebug("StartNetflix", $Response, 0);
 					}
 					elseIf ($Value == 1) {
 						// Stop Netflix
-						shell_exec("adb shell am force-stop com.netflix.ninja");
+						$Response = shell_exec("adb shell am force-stop com.netflix.ninja");
+						$this->SendDebug("StopNetflix", $Response, 0);
 					}
 					elseIf ($Value == 2) {
 						// Wake Up
-						shell_exec("adb shell input keyevent 26");
+						$Response = shell_exec("adb shell input keyevent 26");
+						$this->SendDebug("WakeUp", $Response, 0);
 					}
 					break;	
 				default:
@@ -627,17 +630,20 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	public function StartNetflix()
 	{
-		shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+		$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
+		$this->SendDebug("StartNetflix", $Response, 0);
 	}
 	
 	public function StopNetflix()
 	{
-		shell_exec("adb shell am force-stop com.netflix.ninja");
+		$Response = shell_exec("adb shell am force-stop com.netflix.ninja");
+		$this->SendDebug("StopNetflix", $Response, 0);
 	}
 	
 	private function Send_Key($command)
 	{
-		shell_exec("adb shell input keyevent ".$command);
+		$Response = shell_exec("adb shell input keyevent ".$command);
+		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
 	}
 	
 	
