@@ -170,6 +170,7 @@ class IPS2AmazonFireTV extends IPSModule
 					}
 					elseIf ($Value == 2) {
 						// Wake Up
+						$this->StartADB();
 						$Response = shell_exec("adb shell input keyevent 26");
 						$this->SendDebug("WakeUp", $Response, 0);
 					}
