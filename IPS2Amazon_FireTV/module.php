@@ -59,7 +59,10 @@ class IPS2AmazonFireTV extends IPSModule
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
 		
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		
+		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
+		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+
 		
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
