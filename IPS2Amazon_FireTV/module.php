@@ -632,6 +632,14 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->Send_Key($command);
 	}
 	
+	public function WakeUp()
+	{
+		// Wake Up
+		$this->StartADB();
+		$Response = shell_exec("adb shell input keyevent 26");
+		$this->SendDebug("WakeUp", $Response, 0);
+	}
+	
 	public function StartNetflix()
 	{
 		$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
