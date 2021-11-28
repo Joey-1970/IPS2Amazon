@@ -32,6 +32,13 @@ class IPS2AmazonFireTV extends IPSModule
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 1, "Stop Netflix", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 2, "Wake Up", "Information", -1);
 		
+		$this->RegisterProfileInteger("AmazonFireTV.OnOff", "Power", "", "", 0, 4, 0);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.OnOff", 0, "On/Off", "Power", -1);
+		
+		$this->RegisterProfileInteger("AmazonFireTV.Volume", "Speaker", "", "", 0, 4, 0);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Volume", 0, "+", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("AmazonFireTV.Volume", 1, "-", "Speaker", -1);
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("DirectionPad", "DirectionPad", "AmazonFireTV.DirectionPad", 10);
 		$this->EnableAction("DirectionPad");
@@ -44,6 +51,12 @@ class IPS2AmazonFireTV extends IPSModule
 		
 		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 40);
 		$this->EnableAction("Apps");
+		
+		$this->RegisterVariableInteger("OnOff", "OnOff", "AmazonFireTV.OnOff", 50);
+		$this->EnableAction("OnOff");
+		
+		$this->RegisterVariableInteger("Volume", "Volume", "AmazonFireTV.Volume", 60);
+		$this->EnableAction("Volume");
 	}
 	
 	public function GetConfigurationForm() { 
@@ -178,6 +191,26 @@ class IPS2AmazonFireTV extends IPSModule
 						$this->SendDebug("WakeUp", $Response, 0);
 					}
 					break;	
+				case "OnOff":
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
+						// OnOff
+						$this->Send_Key("26");
+					}
+					
+					break;	
+				case "Volume":
+					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					If ($Value == 0) {
+						$command = "24"; // Volume up
+						$this->Send_Key($command);
+					}
+					elseIf ($Value == 1) {
+						$command = "25"; // Volume down
+						$this->Send_Key($command);
+					}
+					
+					break;
 				default:
 				    throw new Exception("Invalid Ident");
 			}
