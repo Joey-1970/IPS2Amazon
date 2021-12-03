@@ -72,7 +72,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$arrayElements = array(); 
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
-		$arrayElements[] = array("type" => "Label", "label" => "Erforderlich wenn Wake-On-LAN benötigt wird (z.B. Grundig FireTV");
+		$arrayElements[] = array("type" => "Label", "label" => "Erforderlich wenn Wake-On-LAN benötigt wird (z.B. Grundig FireTV)");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "MAC", "caption" => "MAC");
 		
  		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
