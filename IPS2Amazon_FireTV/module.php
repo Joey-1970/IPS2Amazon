@@ -115,6 +115,9 @@ class IPS2AmazonFireTV extends IPSModule
 	public function RequestAction($Ident, $Value) 
 	{
   		If ($this->ReadPropertyBoolean("Open") == true) {
+			$IPAddress = $this->ReadPropertyString("IPAddress");
+			$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+			$this->SendDebug("Connect FireTV", $Response, 0);
 			switch($Ident) {
 				case "DirectionPad":
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
@@ -675,18 +678,27 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	public function StartNetflix()
 	{
+		$IPAddress = $this->ReadPropertyString("IPAddress");
+		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
 		$this->SendDebug("StartNetflix", $Response, 0);
 	}
 	
 	public function StopNetflix()
 	{
+		$IPAddress = $this->ReadPropertyString("IPAddress");
+		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell am force-stop com.netflix.ninja");
 		$this->SendDebug("StopNetflix", $Response, 0);
 	}
 	
 	private function Send_Key($command)
 	{
+		$IPAddress = $this->ReadPropertyString("IPAddress");
+		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell input keyevent ".$command);
 		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
 	}
