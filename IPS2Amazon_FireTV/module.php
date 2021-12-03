@@ -53,8 +53,8 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 40);
 		$this->EnableAction("Apps");
 		
-		$this->RegisterVariableInteger("OnOff", "OnOff", "AmazonFireTV.OnOff", 50);
-		$this->EnableAction("OnOff");
+		$this->RegisterVariableBoolean("State", "Status", "Power", 50);
+		$this->EnableAction("State");
 		
 		$this->RegisterVariableInteger("Volume", "Volume", "AmazonFireTV.Volume", 60);
 		$this->EnableAction("Volume");
@@ -111,10 +111,18 @@ class IPS2AmazonFireTV extends IPSModule
 			//$this->SendDebug("SetTrigger", "Ausfuehrung", 0);
 			$IPAddress = $this->ReadPropertyString("IPAddress");
 			$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-			$Response = shell_exec('adb shell dumpsys power | grep "Display Power"');  
-			$this->SendDebug("State", $Response, 0);
-			$Response = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
-			$this->SendDebug("Activity", $Response, 0);
+			$ResponseState = shell_exec('adb shell dumpsys power | grep "Display Power"');  
+			$this->SendDebug("State", $ResponseState, 0);
+			if(strpos($ResponseState,"Display Power: state=ON")!==false) {
+				$this->SetValue("State", true);
+				$Response = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
+				$this->SendDebug("Activity", $Response, 0);	
+			}
+			elseif (strpos($ResponseState,"Display Power: state=OFF")!==false) {
+				$this->SetValue("State", false);
+			}
+			
+			
 		}
 	} 
 	
@@ -210,10 +218,14 @@ class IPS2AmazonFireTV extends IPSModule
 						$this->SendDebug("WakeUp", $Response, 0);
 					}
 					break;	
-				case "OnOff":
-					SetValueInteger($this->GetIDForIdent($Ident), $Value);
-					If ($Value == 0) {
-						// OnOff
+				case "State":
+					$this->SetValue($Ident, $Value);
+					If ($Value == false) {
+						// On
+						$this->Send_Key("26");
+					}
+					elseif ($Value == true) {
+						// Off
 						$this->Send_Key("26");
 					}
 					
