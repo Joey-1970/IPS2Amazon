@@ -8,6 +8,7 @@ class IPS2AmazonFireTV extends IPSModule
             	parent::Create();
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
+		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);');
 		
 		// Profile anlegen
 		$this->RegisterProfileInteger("AmazonFireTV.DirectionPad", "Information", "", "", 0, 4, 0);
@@ -96,11 +97,26 @@ class IPS2AmazonFireTV extends IPSModule
 			If ($this->ConnectionTest() == true) {
 				$this->StartADB();
 			}
+			$this->SetTimerInterval("Timer_1", 5000);
 		}
 		else {
 			$this->SetStatus(104);
+			$this->SetTimerInterval("Timer_1", 0);
 		}	   
 	}
+	
+	public function GetState()
+	{ 
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			//$this->SendDebug("SetTrigger", "Ausfuehrung", 0);
+			$IPAddress = $this->ReadPropertyString("IPAddress");
+			$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+			$Response = shell_exec('adb shell dumpsys power | grep "Display Power"');  
+			$this->SendDebug("State", $Response, 0);
+			$Response = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
+			$this->SendDebug("Activity", $Response, 0);
+		}
+	} 
 	
 	private function StartADB()
 	{
