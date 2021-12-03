@@ -8,6 +8,7 @@ class IPS2AmazonFireTV extends IPSModule
             	parent::Create();
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
+		$this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
 		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);');
 		
 		// Profile anlegen
@@ -74,12 +75,13 @@ class IPS2AmazonFireTV extends IPSModule
 		$arrayElements = array(); 
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
+		$arrayElements[] = array("type" => "Label", "label" => "Erforderlich wenn Wake-On-LAN benötigt wird (z.B. Grundig FireTV");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "MAC", "caption" => "MAC");
 		
- 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
+ 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "Label", "caption" => "Test Center"); 
 		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
-		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-
+		
 		
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
@@ -243,6 +245,12 @@ class IPS2AmazonFireTV extends IPSModule
 					$this->SetValue($Ident, $Value);
 					If ($Value == false) {
 						// On
+						$MAC = $this->ReadPropertyString("MAC");
+		
+						if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+			 				$this->WakeOnLAN();
+						} 
+						
 						$this->Send_Key("26");
 					}
 					elseif ($Value == true) {
@@ -761,7 +769,6 @@ class IPS2AmazonFireTV extends IPSModule
 	{
 	      $result = false;
 	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 2000)) {
-			//IPS_LogMessage("IPS2AcerP5530","Angegebene IP ".$this->ReadPropertyString("IPAddress")." reagiert");
 			$this->SetStatus(102);
 		      	$result = true;
 		}
@@ -771,6 +778,44 @@ class IPS2AmazonFireTV extends IPSModule
 			//$this->SetStatus(104);
 		}
 	return $result;
+	}
+	
+	private function WakeOnLAN()
+	{
+    		$mac = $this->ReadPropertyString("MAC");
+		
+		$broadcast = "255.255.255.255";
+		$mac_array = preg_split('#:#', $mac);
+    		$hwaddr = '';
+
+    		foreach($mac_array AS $octet)
+    		{
+        		$hwaddr .= chr(hexdec($octet));
+    		}
+
+    		// Create Magic Packet
+    		$packet = '';
+    		for ($i = 1; $i <= 6; $i++)
+    		{
+        		$packet .= chr(255);
+    		}
+
+    		for ($i = 1; $i <= 16; $i++)
+    		{
+        		$packet .= $hwaddr;
+    		}
+
+    		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    		if ($sock)
+    		{
+        		$options = socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, true);
+
+        		if ($options >=0) 
+        		{    
+            			$e = socket_sendto($sock, $packet, strlen($packet), 0, $broadcast, 7);
+            			socket_close($sock);
+        		}    
+    		}
 	}
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
