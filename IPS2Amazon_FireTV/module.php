@@ -162,9 +162,6 @@ class IPS2AmazonFireTV extends IPSModule
 	public function RequestAction($Ident, $Value) 
 	{
   		If ($this->ReadPropertyBoolean("Open") == true) {
-			$IPAddress = $this->ReadPropertyString("IPAddress");
-			$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-			$this->SendDebug("Connect FireTV", $Response, 0);
 			switch($Ident) {
 				case "DirectionPad":
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
@@ -224,6 +221,9 @@ class IPS2AmazonFireTV extends IPSModule
 					break;
 				case "Apps":
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
+					$IPAddress = $this->ReadPropertyString("IPAddress");
+					$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+					$this->SendDebug("Connect FireTV", $Response, 0);
 					If ($Value == 0) {
 						// Start Netflix
 						$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
@@ -240,6 +240,7 @@ class IPS2AmazonFireTV extends IPSModule
 						$Response = shell_exec("adb shell input keyevent 26");
 						$this->SendDebug("WakeUp", $Response, 0);
 					}
+					$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 					break;	
 				case "State":
 					$this->SetValue($Ident, $Value);
@@ -250,8 +251,9 @@ class IPS2AmazonFireTV extends IPSModule
 						if (filter_var($mac, FILTER_VALIDATE_MAC)) {
 			 				$this->WakeOnLAN();
 						} 
-						
-						$this->Send_Key("26");
+						else {
+							$this->Send_Key("26");
+						}
 					}
 					elseif ($Value == true) {
 						// Off
@@ -274,7 +276,6 @@ class IPS2AmazonFireTV extends IPSModule
 				default:
 				    throw new Exception("Invalid Ident");
 			}
-			$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 		}
 	}
 	
