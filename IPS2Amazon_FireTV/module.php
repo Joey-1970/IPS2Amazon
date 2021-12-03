@@ -34,9 +34,6 @@ class IPS2AmazonFireTV extends IPSModule
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 1, "Stop Netflix", "Information", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Apps", 2, "Wake Up", "Information", -1);
 		
-		$this->RegisterProfileInteger("AmazonFireTV.OnOff", "Power", "", "", 0, 4, 0);
-		IPS_SetVariableProfileAssociation("AmazonFireTV.OnOff", 0, "On/Off", "Power", -1);
-		
 		$this->RegisterProfileInteger("AmazonFireTV.Volume", "Speaker", "", "", 0, 4, 0);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Volume", 0, "+", "Speaker", -1);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.Volume", 1, "-", "Speaker", -1);
