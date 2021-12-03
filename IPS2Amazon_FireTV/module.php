@@ -141,6 +141,7 @@ class IPS2AmazonFireTV extends IPSModule
 				$this->SetValue("State", false);
 				$this->SetValue("Activity", "Unbekannt");
 			}
+			
 			$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 			
 		}
