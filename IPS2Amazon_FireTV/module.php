@@ -117,7 +117,7 @@ class IPS2AmazonFireTV extends IPSModule
 			$this->SendDebug("State", $ResponseState, 0);
 			if(strpos($ResponseState,"Display Power: state=ON")!==false) {
 				$this->SetValue("State", true);
-				
+				$this->SetStatus(102);
 				$ResponseActivity = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
 				$this->SendDebug("Activity", $ResponseActivity, 0);
 				if(strpos($ResponseActivity,"com.amazon.tv.launcher")!==false) {
@@ -137,6 +137,7 @@ class IPS2AmazonFireTV extends IPSModule
 				}
 			}
 			elseif (strpos($ResponseState,"Display Power: state=OFF")!==false) {
+				$this->SetStatus(102);
 				$this->SetValue("State", false);
 				$this->SetValue("Activity", "Unbekannt");
 			}
@@ -725,8 +726,8 @@ class IPS2AmazonFireTV extends IPSModule
 	{
 		// Wake Up
 		$this->StartADB();
-		$Response = shell_exec("adb shell input keyevent 26");
-		$this->SendDebug("WakeUp", $Response, 0);
+		$command = "26"; // Power
+		$this->Send_Key($command);
 	}
 	
 	public function StartNetflix()
