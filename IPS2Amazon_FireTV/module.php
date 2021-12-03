@@ -141,7 +141,7 @@ class IPS2AmazonFireTV extends IPSModule
 				$this->SetValue("State", false);
 				$this->SetValue("Activity", "Unbekannt");
 			}
-			
+			$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 			
 		}
 	} 
@@ -152,8 +152,8 @@ class IPS2AmazonFireTV extends IPSModule
 		$Response = shell_exec("adb start-server");  //Start Server
 		$this->SendDebug("Start Server", $Response, 0);
 		IPS_Sleep(1500);
-		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-		$this->SendDebug("Connect FireTV", $Response, 0);
+		//$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+		//$this->SendDebug("Connect FireTV", $Response, 0);
 	}
 	
 	public function RequestAction($Ident, $Value) 
@@ -265,6 +265,7 @@ class IPS2AmazonFireTV extends IPSModule
 				default:
 				    throw new Exception("Invalid Ident");
 			}
+			$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 		}
 	}
 	
@@ -731,6 +732,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
 		$this->SendDebug("StartNetflix", $Response, 0);
+		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 	}
 	
 	public function StopNetflix()
@@ -740,6 +742,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell am force-stop com.netflix.ninja");
 		$this->SendDebug("StopNetflix", $Response, 0);
+		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 	}
 	
 	private function Send_Key($command)
@@ -749,6 +752,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->SendDebug("Connect FireTV", $Response, 0);
 		$Response = shell_exec("adb shell input keyevent ".$command);
 		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
+		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 	}
 	
 	
@@ -761,7 +765,7 @@ class IPS2AmazonFireTV extends IPSModule
 		      	$result = true;
 		}
 		else {
-			IPS_LogMessage("IPS2AcerP5530","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
+			IPS_LogMessage("IPS2FireTV","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
 			//$this->SetStatus(104);
 		}
