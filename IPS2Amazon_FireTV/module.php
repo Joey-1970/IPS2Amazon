@@ -99,7 +99,7 @@ class IPS2AmazonFireTV extends IPSModule
 			If ($this->ConnectionTest() == true) {
 				$this->StartADB();
 			}
-			$this->SetTimerInterval("Timer_1", 5000);
+			$this->SetTimerInterval("Timer_1", 2500);
 		}
 		else {
 			$this->SetStatus(104);
@@ -148,12 +148,9 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	private function StartADB()
 	{
-		$IPAddress = $this->ReadPropertyString("IPAddress");
 		$Response = shell_exec("adb start-server");  //Start Server
 		$this->SendDebug("Start Server", $Response, 0);
 		IPS_Sleep(1500);
-		//$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-		//$this->SendDebug("Connect FireTV", $Response, 0);
 	}
 	
 	public function RequestAction($Ident, $Value) 
@@ -766,14 +763,16 @@ class IPS2AmazonFireTV extends IPSModule
 	private function ConnectionTest()
 	{
 	      $result = false;
-	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 2000)) {
+	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 100)) {
 			$this->SetStatus(102);
 		      	$result = true;
 		}
 		else {
 			IPS_LogMessage("IPS2FireTV","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
-			//$this->SetStatus(104);
+			$this->SetValue("State", false);
+			$this->SetValue("Activity", "Unbekannt");
+			$this->SetStatus(202);
 		}
 	return $result;
 	}
