@@ -53,7 +53,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterVariableInteger("Apps", "Apps", "AmazonFireTV.Apps", 40);
 		$this->EnableAction("Apps");
 		
-		$this->RegisterVariableBoolean("State", "Status", "Power", 50);
+		$this->RegisterVariableBoolean("State", "Status", "~Switch", 50);
 		$this->EnableAction("State");
 		
 		$this->RegisterVariableInteger("Volume", "Volume", "AmazonFireTV.Volume", 60);
