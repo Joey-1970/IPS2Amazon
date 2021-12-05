@@ -36,9 +36,15 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetStatus(102);
+			shell_exec("adb kill-server");  //Server Stoppen
+			$Response = shell_exec("adb start-server");  //Start Server
+			$this->SendDebug("Start Server", $Response, 0);
+			IPS_Sleep(1500);
 		}
 		else {
 			$this->SetStatus(104);
+			shell_exec("adb disconnect");  //Disconnect FireTV
+			shell_exec("adb kill-server");  //Server Stoppen
 		}	
 	}
 	
