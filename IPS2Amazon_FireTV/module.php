@@ -241,7 +241,7 @@ class IPS2AmazonFireTV extends IPSModule
 						// On
 						$MAC = $this->ReadPropertyString("MAC");
 		
-						if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+						if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
 			 				$this->WakeOnLAN();
 						} 
 						else {
@@ -786,7 +786,7 @@ class IPS2AmazonFireTV extends IPSModule
 			
 			$MAC = $this->ReadPropertyString("MAC");
 		
-			if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+			if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
 				$this->SetStatus(102);
 			} 
 			else {
