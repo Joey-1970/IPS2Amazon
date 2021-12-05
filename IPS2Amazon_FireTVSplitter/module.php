@@ -1,9 +1,7 @@
 <?
     // Klassendefinition
     class IPS2AmazonFireTVSplitter extends IPSModule 
-    {
-	// https://github.com/glenndehaan/ikea-tradfri-coap-docs
-	    
+    {  
 	// Überschreibt die interne IPS_Create($id) Funktion
         public function Create() 
         {
@@ -56,7 +54,7 @@
 				break;
 		
 		}
-	return $Result;
+	return $Response;
 	}
 	    
 	// Beginn der Funktionen
