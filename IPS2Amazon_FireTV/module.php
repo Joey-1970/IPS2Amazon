@@ -130,7 +130,10 @@ class IPS2AmazonFireTV extends IPSModule
 					$Activity = "Netflix";
 				}
 				elseif(strpos($ResponseActivity,"com.amazon.firebat")!==false) {
-					$Activity = "Amazon Prime";
+					$Activity = "Amazon Prime Video";
+				}
+				elseif(strpos($ResponseActivity,"com.amazon.avod")!==false) {
+					$Activity = "Amazon Video";
 				}
 				elseif(strpos($ResponseActivity,"com.disney.disneyplus")!==false) {
 					$Activity = "Disney+";
