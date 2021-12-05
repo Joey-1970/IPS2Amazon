@@ -95,10 +95,9 @@ class IPS2AmazonFireTV extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Action"), 1);
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-
+			$this->SetTimerInterval("Timer_1", 2500);
 			$this->SetStatus(102);
 			$this->ConnectionTest();
-			$this->SetTimerInterval("Timer_1", 2500);
 		}
 		else {
 			$this->SetStatus(104);
