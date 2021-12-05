@@ -783,7 +783,15 @@ class IPS2AmazonFireTV extends IPSModule
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
 			$this->SetValue("State", false);
 			$this->SetValue("Activity", "Unbekannt");
-			$this->SetStatus(202);
+			
+			$MAC = $this->ReadPropertyString("MAC");
+		
+			if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+				$this->SetStatus(102);
+			} 
+			else {
+				$this->SetStatus(202);
+			}
 		}
 	return $result;
 	}
