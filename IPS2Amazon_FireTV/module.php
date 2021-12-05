@@ -115,26 +115,31 @@ class IPS2AmazonFireTV extends IPSModule
 
 			$this->SendDebug("State", $ResponseState, 0);
 			if(strpos($ResponseState,"Display Power: state=ON")!==false) {
-				$this->SetValue("State", true);
+				If ($this->GetValue("State") <> true) {
+					$this->SetValue("State", true);
+				}
 				$this->SetStatus(102);
 				
 				$ResponseActivity = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys activity recents |grep "Recent #0"' )));
 
 				$this->SendDebug("Activity", $ResponseActivity, 0);
 				if(strpos($ResponseActivity,"com.amazon.tv.launcher")!==false) {
-					$this->SetValue("Activity", "Startbildschirm");
+					$Activity = "Startbildschirm";
 				}
 				elseif(strpos($ResponseActivity,"com.netflix.ninja")!==false) {
-					$this->SetValue("Activity", "Netflix");
+					$Activity = "Netflix";
 				}
 				elseif(strpos($ResponseActivity,"com.amazon.firebat")!==false) {
-					$this->SetValue("Activity", "Amazon Prime");
+					$Activity = "Amazon Prime";
 				}
 				elseif(strpos($ResponseActivity,"com.disney.disneyplus")!==false) {
-					$this->SetValue("Activity", "Disney+");
+					$Activity = "Disney+";
 				}
 				else {
-					$this->SetValue("Activity", "Unbekannt");
+					$Activity = "Unbekannt";
+				}
+				If ($this->GetValue("Activity") <> $Activity) {
+					$this->SetValue("Activity", $Activity);
 				}
 			}
 			elseif (strpos($ResponseState,"Display Power: state=OFF")!==false) {
@@ -142,9 +147,6 @@ class IPS2AmazonFireTV extends IPSModule
 				$this->SetValue("State", false);
 				$this->SetValue("Activity", "Unbekannt");
 			}
-			
-			//$Response = shell_exec("adb disconnect");  //Disconnect FireTV
-			
 		}
 	} 
 	
@@ -217,32 +219,18 @@ class IPS2AmazonFireTV extends IPSModule
 					break;
 				case "Apps":
 					SetValueInteger($this->GetIDForIdent($Ident), $Value);
-					// $IPAddress = $this->ReadPropertyString("IPAddress");
-					// $Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-					$this->SendDebug("Connect FireTV", $Response, 0);
+	
 					If ($Value == 0) {
 						// Start Netflix
 						$this->StartNetflix();
-						
-						//$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell am start -n com.netflix.ninja/.MainActivity" )));
-
-						//$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
-						//$this->SendDebug("StartNetflix", $Response, 0);
 					}
 					elseIf ($Value == 1) {
 						// Stop Netflix
 						$this->StopNetflix();
-						//$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell am force-stop com.netflix.ninja" )));
-
-						// $Response = shell_exec("adb shell am force-stop com.netflix.ninja");
-						//$this->SendDebug("StopNetflix", $Response, 0);
 					}
 					elseIf ($Value == 2) {
 						// Wake Up
-						//$this->StartADB();
 						$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell input keyevent 26" )));
-
-						// $Response = shell_exec("adb shell input keyevent 26");
 						$this->SendDebug("WakeUp", $Response, 0);
 					}
 					// $Response = shell_exec("adb disconnect");  //Disconnect FireTV
