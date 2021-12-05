@@ -1,6 +1,6 @@
 <?
     // Klassendefinition
-    class IPS2FireTVSplitter extends IPSModule 
+    class IPS2AmazonFireTVSplitter extends IPSModule 
     {
 	// https://github.com/glenndehaan/ikea-tradfri-coap-docs
 	    
