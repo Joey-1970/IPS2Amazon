@@ -53,8 +53,8 @@
 	    	$data = json_decode($JSONString);
 	    	$Result = false;
 	 	switch ($data->Function) {
-			case "getDeviceList":
-				$DeviceListArray = array();
+			case "SendMessage":
+				$Response = $this->Send_Message($data->IP, $data->Command);
 				
 				break;
 		
@@ -63,7 +63,22 @@
 	}
 	    
 	// Beginn der Funktionen
- 
+ 	private function Send_Message(string $IP, string $command)
+	{
+		$Response = "";
+		if (IPS_SemaphoreEnter("Message", 300)) {
+			$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
+			$this->SendDebug("Connect FireTV", $Response, 0);
+			$Response = shell_exec($command);
+			$this->SendDebug("Send_Message", "IP: ".$IP." Command: ".$command." Response:".$Response, 0);
+			shell_exec("adb disconnect");  //Disconnect FireTV
+			IPS_SemaphoreLeave("Message");
+		}
+		else {
+		   	$this->SendDebug("SemaphoreEnter", "Konnte nicht ausgeführt werden!", 0);
+		}	
+	return $Response;
+	}
 	
 	private function ConnectionTest()
 	{
