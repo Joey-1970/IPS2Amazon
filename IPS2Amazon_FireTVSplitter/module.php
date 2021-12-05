@@ -7,7 +7,7 @@
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-		          $this->RegisterPropertyBoolean("Open", false);
+		$this->RegisterPropertyBoolean("Open", false);
 		
         }
  	
