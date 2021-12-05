@@ -97,9 +97,7 @@ class IPS2AmazonFireTV extends IPSModule
 		If ($this->ReadPropertyBoolean("Open") == true) {
 
 			$this->SetStatus(102);
-			If ($this->ConnectionTest() == true) {
-				$this->StartADB();
-			}
+			$this->ConnectionTest();
 			$this->SetTimerInterval("Timer_1", 2500);
 		}
 		else {
@@ -157,13 +155,6 @@ class IPS2AmazonFireTV extends IPSModule
 			}
 		}
 	} 
-	
-	private function StartADB()
-	{
-		$Response = shell_exec("adb start-server");  //Start Server
-		$this->SendDebug("Start Server", $Response, 0);
-		IPS_Sleep(1500);
-	}
 	
 	public function RequestAction($Ident, $Value) 
 	{
