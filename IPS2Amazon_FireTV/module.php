@@ -14,6 +14,7 @@ class IPS2AmazonFireTV extends IPSModule
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
 		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);');
+		$this->ConnectParent("{F48C4C47-2E8B-2F11-ECC5-DF6546396303}");
 		
 		// Profile anlegen
 		$this->RegisterProfileInteger("AmazonFireTV.DirectionPad", "Information", "", "", 0, 4, 0);
@@ -116,13 +117,18 @@ class IPS2AmazonFireTV extends IPSModule
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			//$this->SendDebug("SetTrigger", "Ausfuehrung", 0);
 			$IPAddress = $this->ReadPropertyString("IPAddress");
-			$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-			$ResponseState = shell_exec('adb shell dumpsys power | grep "Display Power"');  
+			//$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
+			//$ResponseState = shell_exec('adb shell dumpsys power | grep "Display Power"');  
+			$ResponseState = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys power | grep "Display Power"' )));
+
 			$this->SendDebug("State", $ResponseState, 0);
 			if(strpos($ResponseState,"Display Power: state=ON")!==false) {
 				$this->SetValue("State", true);
 				$this->SetStatus(102);
-				$ResponseActivity = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
+				
+				//$ResponseActivity = shell_exec('adb shell dumpsys activity recents |grep "Recent #0"');  
+				$ResponseActivity = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys activity recents |grep "Recent #0"' )));
+
 				$this->SendDebug("Activity", $ResponseActivity, 0);
 				if(strpos($ResponseActivity,"com.amazon.tv.launcher")!==false) {
 					$this->SetValue("Activity", "Startbildschirm");
@@ -146,7 +152,7 @@ class IPS2AmazonFireTV extends IPSModule
 				$this->SetValue("Activity", "Unbekannt");
 			}
 			
-			$Response = shell_exec("adb disconnect");  //Disconnect FireTV
+			//$Response = shell_exec("adb disconnect");  //Disconnect FireTV
 			
 		}
 	} 
