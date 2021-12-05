@@ -7,8 +7,8 @@
   [
     "IPS2AmazonFireTV"
   ],
-  "parentRequirements": [],
+  "parentRequirements": ["{783C7BEA-6898-E156-3242-0B4683B0A4D5}"],
   "childRequirements": [],
-  "implemented": [],
+  "implemented": ["{A0D1E133-F7DB-0B44-BE59-D915CCD810F0}"],
   "prefix": "FireTV"
 }
