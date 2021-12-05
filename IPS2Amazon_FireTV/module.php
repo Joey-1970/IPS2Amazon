@@ -1,10 +1,6 @@
 <?
 class IPS2AmazonFireTV extends IPSModule
 {
-	// $Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "BulbSwitch", "DeviceID" => $this->ReadPropertyInteger("DeviceID"), "State" => $Value, "Fadetime" => GetValueInteger($this->GetIDForIdent("Fadetime")) )));
-
-	
-	
 	// Überschreibt die interne IPS_Create($id) Funktion
         public function Create() 
         {
