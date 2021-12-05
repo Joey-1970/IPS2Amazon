@@ -38,12 +38,9 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetStatus(102);
-			}
-			
 		}
 		else {
 			$this->SetStatus(104);
-			
 		}	
 	}
 	
