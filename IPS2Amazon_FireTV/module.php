@@ -150,8 +150,12 @@ class IPS2AmazonFireTV extends IPSModule
 			}
 			elseif (strpos($ResponseState,"Display Power: state=OFF")!==false) {
 				$this->SetStatus(102);
-				$this->SetValue("State", false);
-				$this->SetValue("Activity", "Unbekannt");
+				If ($this->GetValue("State") <> false) {
+					$this->SetValue("State", false);
+				}
+				If ($this->GetValue("Activity") <> "Unbekannt") {
+					$this->SetValue("Activity", "Unbekannt");
+				}
 			}
 		}
 	} 
