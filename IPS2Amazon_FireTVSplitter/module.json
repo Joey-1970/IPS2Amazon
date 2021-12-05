@@ -1,14 +1,14 @@
 {
   "id": "{F48C4C47-2E8B-2F11-ECC5-DF6546396303}",
-  "name": "IPS2FireTVSplitter",
+  "name": "IPS2AmazonFireTVSplitter",
   "type": 2,
   "vendor": "JP-IPS-Modules",
   "aliases":
   [
-    "IPS2FireTVSplitter"
+    "IPS2AmazonFireTVSplitter"
   ],
   "parentRequirements": [],
   "childRequirements": ["{A0D1E133-F7DB-0B44-BE59-D915CCD810F0}"],
   "implemented": ["{783C7BEA-6898-E156-3242-0B4683B0A4D5}"],
-  "prefix": "IPS2FireTVSplitter"
+  "prefix": "IPS2AmazonFireTVSplitter"
 }
