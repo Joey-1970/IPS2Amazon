@@ -8,7 +8,7 @@
     "IPS2FireTVSplitter"
   ],
   "parentRequirements": [],
-  "childRequirements": ["{D63AA852-D72B-258B-6AF5-689C8B62AF02}"],
-  "implemented": ["{4AA318CB-CA9A-2467-3079-A35AD1577771}"],
+  "childRequirements": ["{A0D1E133-F7DB-0B44-BE59-D915CCD810F0}"],
+  "implemented": ["{783C7BEA-6898-E156-3242-0B4683B0A4D5}"],
   "prefix": "IPS2FireTVSplitter"
 }
