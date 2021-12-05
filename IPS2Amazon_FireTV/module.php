@@ -138,6 +138,11 @@ class IPS2AmazonFireTV extends IPSModule
 				elseif(strpos($ResponseActivity,"com.disney.disneyplus")!==false) {
 					$Activity = "Disney+";
 				}
+				elseif(strpos($ResponseActivity,"de.swr.ard.avp.mobile.android.amazon")!==false) {
+					$Activity = "ARD Mediathek";
+				}
+				
+				
 				else {
 					$Activity = "Unbekannt";
 				}
