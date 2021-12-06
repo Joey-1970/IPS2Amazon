@@ -725,7 +725,6 @@ class IPS2AmazonFireTV extends IPSModule
 	public function WakeUp()
 	{
 		// Wake Up
-		$this->StartADB();
 		$command = "26"; // Power
 		$this->Send_Key($command);
 	}
@@ -734,42 +733,18 @@ class IPS2AmazonFireTV extends IPSModule
 	{
 		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell am start -n com.netflix.ninja/.MainActivity" )));
 		$this->SendDebug("StartNetflix", $Response, 0);
-		/*
-		$IPAddress = $this->ReadPropertyString("IPAddress");
-		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-		$this->SendDebug("Connect FireTV", $Response, 0);
-		$Response = shell_exec("adb shell am start -n com.netflix.ninja/.MainActivity");
-		$this->SendDebug("StartNetflix", $Response, 0);
-		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
-		*/
 	}
 	
 	public function StopNetflix()
 	{
 		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell am force-stop com.netflix.ninja" )));
 		$this->SendDebug("StopNetflix", $Response, 0);
-		/*
-		$IPAddress = $this->ReadPropertyString("IPAddress");
-		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-		$this->SendDebug("Connect FireTV", $Response, 0);
-		$Response = shell_exec("adb shell am force-stop com.netflix.ninja");
-		$this->SendDebug("StopNetflix", $Response, 0);
-		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
-		*/
 	}
 	
 	private function Send_Key($command)
 	{
 		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell input keyevent ".$command )));
 		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
-		/*
-		$IPAddress = $this->ReadPropertyString("IPAddress");
-		$Response = shell_exec("adb connect ".$IPAddress);  //Connect FireTV
-		$this->SendDebug("Connect FireTV", $Response, 0);
-		$Response = shell_exec("adb shell input keyevent ".$command);
-		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
-		$Response = shell_exec("adb disconnect");  //Disconnect FireTV
-		*/
 	}
 	
 	
