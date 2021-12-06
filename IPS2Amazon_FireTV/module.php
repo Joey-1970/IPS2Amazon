@@ -747,6 +747,11 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->SendDebug("Send_Key", "Command: ".$command." Response:".$Response, 0);
 	}
 	
+	public function Screenshot()
+	{
+		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell screencap -p /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
+		$this->SendDebug("Screenshot", "Response:".$Response, 0);
+	}
 	
 	private function ConnectionTest()
 	{
