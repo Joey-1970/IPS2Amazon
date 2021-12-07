@@ -9,7 +9,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
-		$this->RegisterPropertyInteger("ScreenshotUpdate", 30);
+		$this->RegisterPropertyInteger("ScreenshotUpdate", 0);
 		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);'); // Statusabfrage
 		$this->RegisterTimer("Timer_2", 0, 'FireTV_Screenshot($_IPS["TARGET"]);'); // Screenshot
 		$this->ConnectParent("{F48C4C47-2E8B-2F11-ECC5-DF6546396303}");
