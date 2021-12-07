@@ -749,10 +749,18 @@ class IPS2AmazonFireTV extends IPSModule
 	
 	public function Screenshot()
 	{
-		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell screencap -p /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
-		$this->SendDebug("Screenshot", "Response:".$Response, 0);
-		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb pull /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
-		$this->SendDebug("Screenshot", "Response:".$Response, 0);
+		//$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell screencap -p /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
+		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell screencap -p /sdcard/screenshot.png" )));
+		$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
+		//$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb pull /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
+		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb pull /sdcard/screenshot.png /var/lib/symcon/modules/IPS2Amazon/imgs/screenshot.png" )));
+		$this->SendDebug("Screenshot", "Response 2: ".$Response, 0);
+		
+		$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "adb shell rm /sdcard/screenshot.png" )));
+		$this->SendDebug("Screenshot", "Response 3: ".$Response, 0);
+		// adb shell screencap -p /sdcard/dateiname.png
+		// adb pull /sdcard/filename.png /tmp
+		// adb shell rm /sdcard/dateiname.png
 	}
 	
 	private function ConnectionTest()
