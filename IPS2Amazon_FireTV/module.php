@@ -9,7 +9,9 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
-		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);');
+		$this->RegisterPropertyInteger("ScreenshotUpdate", 30);
+		$this->RegisterTimer("Timer_1", 0, 'FireTV_GetState($_IPS["TARGET"]);'); // Statusabfrage
+		$this->RegisterTimer("Timer_2", 0, 'FireTV_Screenshot($_IPS["TARGET"]);'); // Screenshot
 		$this->ConnectParent("{F48C4C47-2E8B-2F11-ECC5-DF6546396303}");
 		
 		// Profile anlegen
@@ -77,7 +79,8 @@ class IPS2AmazonFireTV extends IPSModule
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
 		$arrayElements[] = array("type" => "Label", "label" => "Erforderlich wenn Wake-On-LAN benötigt wird (z.B. Grundig FireTV)");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "MAC", "caption" => "MAC");
-		
+		$arrayElements[] = array("type" => "NumberSpinner", "name" => "ScreenshotUpdate", "caption" => "Screenshot-Update ", "minimum" => 30, "maximum" => 3600, "suffix" => "sek");
+
  		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "caption" => "Test Center"); 
 		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
@@ -98,6 +101,7 @@ class IPS2AmazonFireTV extends IPSModule
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetTimerInterval("Timer_1", 2500);
+			$this->SetTimerInterval("Timer_2", ($this->ReadPropertyInteger("ScreenshotUpdate") * 1000));
 			$this->SetStatus(102);
 			$this->ConnectionTest();
 			$this->GetState();
@@ -105,6 +109,7 @@ class IPS2AmazonFireTV extends IPSModule
 		else {
 			$this->SetStatus(104);
 			$this->SetTimerInterval("Timer_1", 0);
+			$this->SetTimerInterval("Timer_2", 0);
 		}	   
 	}
 	
@@ -751,8 +756,8 @@ class IPS2AmazonFireTV extends IPSModule
 	}
 	
 	public function Screenshot()
-	{
-		If ($this->GetValue("State") == true) {
+	{	
+		If (($this->GetValue("State") == true) AND ($this->ReadPropertyBoolean("Open") == true)) {
 			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
 			$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
 			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb pull /sdcard/screenshot_".$this->InstanceID.".png /var/lib/symcon/screenshot_".$this->InstanceID.".png" )));
