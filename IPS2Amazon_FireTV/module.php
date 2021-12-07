@@ -98,6 +98,7 @@ class IPS2AmazonFireTV extends IPSModule
 			$this->SetTimerInterval("Timer_1", 2500);
 			$this->SetStatus(102);
 			$this->ConnectionTest();
+			$this->GetState();
 		}
 		else {
 			$this->SetStatus(104);
