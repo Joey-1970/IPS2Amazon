@@ -751,11 +751,11 @@ class IPS2AmazonFireTV extends IPSModule
 	public function Screenshot()
 	{
 		If ($this->GetValue("State") == true) {
-			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "su adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
+			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
 			$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
-			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "su adb pull /sdcard/screenshot_".$this->InstanceID.".png /var/lib/symcon/screenshot_".$this->InstanceID.".png" )));
+			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb pull /sdcard/screenshot_".$this->InstanceID.".png /var/lib/symcon/screenshot_".$this->InstanceID.".png" )));
 			$this->SendDebug("Screenshot", "Response 2: ".$Response, 0);
-			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "su adb shell rm /sdcard/screenshot_".$this->InstanceID.".png" )));
+			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell rm /sdcard/screenshot_".$this->InstanceID.".png" )));
 			$this->SendDebug("Screenshot", "Response 3: ".$Response, 0);
 		}
 	}
