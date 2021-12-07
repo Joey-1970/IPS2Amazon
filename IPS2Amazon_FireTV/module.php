@@ -13,7 +13,7 @@ class IPS2AmazonFireTV extends IPSModule
 		$this->ConnectParent("{F48C4C47-2E8B-2F11-ECC5-DF6546396303}");
 		
 		// Profile anlegen
-		$this->RegisterMediaObject("Screenshot_".$this->InstanceID, "Screenshot_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Screenshot.jpg");
+		$this->RegisterMediaObject("Screenshot_".$this->InstanceID, "Screenshot_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Screenshot.png");
 
 		$this->RegisterProfileInteger("AmazonFireTV.DirectionPad", "Information", "", "", 0, 4, 0);
 		IPS_SetVariableProfileAssociation("AmazonFireTV.DirectionPad", 0, "Left", "Information", -1);
@@ -760,7 +760,7 @@ class IPS2AmazonFireTV extends IPSModule
 			$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell rm /sdcard/screenshot_".$this->InstanceID.".png" )));
 			$this->SendDebug("Screenshot", "Response 3: ".$Response, 0);
 			
-			$Content = file_get_contents("/var/lib/symcon/screenshot_".$this->InstanceID.".png);
+			$Content = file_get_contents("/var/lib/symcon/screenshot_".$this->InstanceID.".png");
 			IPS_SetMediaContent($this->GetIDForIdent("Screenshot_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($this->GetIDForIdent("Screenshot_".$this->InstanceID)); //aktualisieren
 		}
