@@ -99,6 +99,10 @@ class IPS2AmazonFireTV extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Basic"), 1);
 		SetValueInteger($this->GetIDForIdent("Action"), 1);
 		
+		$Content = file_get_contents(__DIR__ . '/../imgs/FireTV.png'); 
+		IPS_SetMediaContent($this->GetIDForIdent("Screenshot_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
+		IPS_SendMediaEvent($this->GetIDForIdent("Screenshot_".$this->InstanceID)); //aktualisieren
+		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetTimerInterval("Timer_1", 2500);
 			$this->SetTimerInterval("Timer_2", ($this->ReadPropertyInteger("ScreenshotUpdate") * 1000));
@@ -762,6 +766,11 @@ class IPS2AmazonFireTV extends IPSModule
 			If ($this->GetValue("Activity") == "Netflix") {
 				$Content = file_get_contents(__DIR__ . '/../imgs/Netflix.png'); 
 			}
+			/*
+			elseif ($this->GetValue("Activity") == "Disney+") {
+				$Content = file_get_contents(__DIR__ . '/../imgs/DisneyPlus.png'); 
+			}
+			*/
 			else {
 				$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
 				$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
