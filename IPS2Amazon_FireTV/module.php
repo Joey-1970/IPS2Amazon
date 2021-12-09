@@ -109,6 +109,7 @@ class IPS2AmazonFireTV extends IPSModule
 			$this->SetStatus(102);
 			$this->ConnectionTest();
 			$this->GetState();
+			$this->Screenshot();
 		}
 		else {
 			$this->SetStatus(104);
@@ -763,6 +764,7 @@ class IPS2AmazonFireTV extends IPSModule
 	public function Screenshot()
 	{	
 		If (($this->GetValue("State") == true) AND ($this->ReadPropertyBoolean("Open") == true)) {
+			$this->SendDebug("Screenshot", "Bild setzen", 0);
 			If ($this->GetValue("Activity") == "Netflix") {
 				$Content = file_get_contents(__DIR__ . '/../imgs/Netflix.png'); 
 			}
@@ -775,13 +777,16 @@ class IPS2AmazonFireTV extends IPSModule
 			elseif ($this->GetValue("Activity") == "Amazon Prime Video") {
 				$Content = file_get_contents(__DIR__ . '/../imgs/AmazonVideo.png'); 
 			}
+			elseif ($this->GetValue("Activity") == "ARD Mediathek") {
+				$Content = file_get_contents(__DIR__ . '/../imgs/ARDMediathek.png'); 
+			}
 			else {
 				$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
-				$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
+				//$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
 				$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb pull /sdcard/screenshot_".$this->InstanceID.".png /var/lib/symcon" )));
-				$this->SendDebug("Screenshot", "Response 2: ".$Response, 0);
+				$this->SendDebug("Screenshot", "Response: ".$Response, 0);
 				$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell rm /sdcard/screenshot_".$this->InstanceID.".png" )));
-				$this->SendDebug("Screenshot", "Response 3: ".$Response, 0);
+				//$this->SendDebug("Screenshot", "Response 3: ".$Response, 0);
 
 				$Content = file_get_contents("/var/lib/symcon/screenshot_".$this->InstanceID.".png");
 			}
