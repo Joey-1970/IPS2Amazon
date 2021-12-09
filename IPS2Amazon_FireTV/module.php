@@ -766,11 +766,15 @@ class IPS2AmazonFireTV extends IPSModule
 			If ($this->GetValue("Activity") == "Netflix") {
 				$Content = file_get_contents(__DIR__ . '/../imgs/Netflix.png'); 
 			}
-			/*
 			elseif ($this->GetValue("Activity") == "Disney+") {
 				$Content = file_get_contents(__DIR__ . '/../imgs/DisneyPlus.png'); 
 			}
-			*/
+			elseif ($this->GetValue("Activity") == "Amazon Video") {
+				$Content = file_get_contents(__DIR__ . '/../imgs/AmazonVideo.png'); 
+			}
+			elseif ($this->GetValue("Activity") == "Amazon Prime Video") {
+				$Content = file_get_contents(__DIR__ . '/../imgs/AmazonVideo.png'); 
+			}
 			else {
 				$Response = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => "sudo adb shell screencap -p /sdcard/screenshot_".$this->InstanceID.".png" )));
 				$this->SendDebug("Screenshot", "Response 1: ".$Response, 0);
