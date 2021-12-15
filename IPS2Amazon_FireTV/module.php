@@ -106,13 +106,17 @@ class IPS2AmazonFireTV extends IPSModule
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetTimerInterval("Timer_1", 2500);
 			$this->SetTimerInterval("Timer_2", ($this->ReadPropertyInteger("ScreenshotUpdate") * 1000));
-			$this->SetStatus(102);
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 			$this->ConnectionTest();
 			$this->GetState();
 			$this->Screenshot();
 		}
 		else {
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 			$this->SetTimerInterval("Timer_1", 0);
 			$this->SetTimerInterval("Timer_2", 0);
 		}	   
@@ -128,7 +132,9 @@ class IPS2AmazonFireTV extends IPSModule
 				If ($this->GetValue("State") <> true) {
 					$this->SetValue("State", true);
 				}
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 				
 				$ResponseActivity = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys activity recents |grep "Recent #0"' )));
 
@@ -162,7 +168,9 @@ class IPS2AmazonFireTV extends IPSModule
 				}
 			}
 			elseif (strpos($ResponseState,"Display Power: state=OFF")!==false) {
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 				If ($this->GetValue("State") <> false) {
 					$this->SetValue("State", false);
 				}
@@ -800,7 +808,9 @@ class IPS2AmazonFireTV extends IPSModule
 	{
 	      $result = false;
 	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 100)) {
-			$this->SetStatus(102);
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 		      	$result = true;
 		}
 		else {
@@ -812,10 +822,14 @@ class IPS2AmazonFireTV extends IPSModule
 			$MAC = $this->ReadPropertyString("MAC");
 		
 			if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 			} 
 			else {
-				$this->SetStatus(202);
+				If ($this->GetStatus() <> 202) {
+					$this->SetStatus(202);
+				}
 			}
 		}
 	return $result;
