@@ -35,14 +35,18 @@
             	parent::ApplyChanges();
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$this->SetStatus(102);
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 			shell_exec("adb kill-server");  //Server Stoppen
 			$Response = shell_exec("adb start-server");  //Start Server
 			$this->SendDebug("Start Server", $Response, 0);
 			IPS_Sleep(1500);
 		}
 		else {
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 			shell_exec("adb disconnect");  //Disconnect FireTV
 			shell_exec("adb kill-server");  //Server Stoppen
 		}	
@@ -91,7 +95,9 @@
 		else {
 			$this->SendDebug("ConnectionTest", "GatewayIP ".$this->ReadPropertyString("GatewayIP")." reagiert nicht!", 0);
 			IPS_LogMessage("IPS2Tradfi","GatewayIP ".$this->ReadPropertyString("GatewayIP")." reagiert nicht!");
-			$this->SetStatus(202);
+			If ($this->GetStatus() <> 202) {
+				$this->SetStatus(202);
+			}
 		}
 	return $Result;
 	}
