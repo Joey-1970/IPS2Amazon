@@ -71,7 +71,7 @@
  	private function Send_Message(string $IP, string $command)
 	{
 		$Response = "";
-		if (IPS_SemaphoreEnter("Message", 300)) {
+		if (IPS_SemaphoreEnter("Message", 2000)) {
 			$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
 			$this->SendDebug("Connect FireTV", $Response, 0);
 			$Response = shell_exec($command);
