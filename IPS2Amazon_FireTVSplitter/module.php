@@ -60,6 +60,9 @@
 	 	switch ($data->Function) {
 			case "SendMessage":
 				$Response = $this->Send_Message($data->IP, $data->Command);
+				break;
+			case "GetState":
+				$Response = $this->Get_State($data->IP, $data->Command);
 				
 				break;
 		
@@ -72,16 +75,37 @@
 	{
 		$Response = "";
 		if (IPS_SemaphoreEnter("Message", 2000)) {
+			$this->SetBuffer("Send_Message", "1");
 			$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
 			$this->SendDebug("Connect FireTV", $Response, 0);
 			$Response = shell_exec($command);
 			$this->SendDebug("Send_Message", "IP: ".$IP." Command: ".$command." Response:".$Response, 0);
 			shell_exec("adb disconnect");  //Disconnect FireTV
 			IPS_SemaphoreLeave("Message");
+			$this->SetBuffer("Send_Message", "0");
 		}
 		else {
-		   	$this->SendDebug("SemaphoreEnter", "Konnte nicht ausgeführt werden!", 0);
+		   	$this->SendDebug("SemaphoreEnter", "Send_Message Konnte nicht ausgeführt werden!", 0);
 		}	
+	return $Response;
+	}
+	    
+	private function Get_State(string $IP, string $command)
+	{
+		$Response = "";
+		If (boolval($this->GetBuffer("Send_Message")) == false) {
+			if (IPS_SemaphoreEnter("State", 2000)) {
+				$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
+				$this->SendDebug("Connect FireTV", $Response, 0);
+				$Response = shell_exec($command);
+				$this->SendDebug("Get_State", "IP: ".$IP." Command: ".$command." Response:".$Response, 0);
+				shell_exec("adb disconnect");  //Disconnect FireTV
+				IPS_SemaphoreLeave("State");
+			}
+			else {
+				$this->SendDebug("SemaphoreEnter", "Get_State Konnte nicht ausgeführt werden!", 0);
+			}	
+		}
 	return $Response;
 	}
 	
