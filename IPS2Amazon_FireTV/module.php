@@ -125,7 +125,7 @@ class IPS2AmazonFireTV extends IPSModule
 	public function GetState()
 	{ 
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$ResponseState = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys power | grep "Display Power"' )));
+			$ResponseState = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "GetState", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys power | grep "Display Power"' )));
 
 			$this->SendDebug("State", $ResponseState, 0);
 			if(strpos($ResponseState,"Display Power: state=ON")!==false) {
@@ -136,7 +136,7 @@ class IPS2AmazonFireTV extends IPSModule
 					$this->SetStatus(102);
 				}
 				
-				$ResponseActivity = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "SendMessage", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys activity recents |grep "Recent #0"' )));
+				$ResponseActivity = $this->SendDataToParent(json_encode(Array("DataID"=> "{783C7BEA-6898-E156-3242-0B4683B0A4D5}", "Function" => "GetState", "IP" => $this->ReadPropertyString("IPAddress"), "Command" => 'adb shell dumpsys activity recents |grep "Recent #0"' )));
 
 				$this->SendDebug("Activity", $ResponseActivity, 0);
 				if(strpos($ResponseActivity,"com.amazon.tv.launcher")!==false) {
