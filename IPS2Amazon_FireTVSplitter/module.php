@@ -95,7 +95,7 @@
 		$Response = "";
 		If (boolval($this->GetBuffer("Send_Message")) == false) {
 			if (IPS_SemaphoreEnter("State", 2000)) {
-				$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
+				$Response = shell_exec("adb connect ".$IP.":5555");  //Connect FireTV
 				$this->SendDebug("Connect FireTV", $Response, 0);
 				$Response = shell_exec($command);
 				$this->SendDebug("Get_State", "IP: ".$IP." Command: ".$command." Response:".$Response, 0);
@@ -118,7 +118,7 @@
 	      	}
 		else {
 			$this->SendDebug("ConnectionTest", "GatewayIP ".$this->ReadPropertyString("GatewayIP")." reagiert nicht!", 0);
-			IPS_LogMessage("IPS2Tradfi","GatewayIP ".$this->ReadPropertyString("GatewayIP")." reagiert nicht!");
+			IPS_LogMessage("IPS2Amazon","GatewayIP ".$this->ReadPropertyString("GatewayIP")." reagiert nicht!");
 			If ($this->GetStatus() <> 202) {
 				$this->SetStatus(202);
 			}
