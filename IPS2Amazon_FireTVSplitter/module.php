@@ -76,7 +76,7 @@
 		$Response = "";
 		if (IPS_SemaphoreEnter("Message", 2000)) {
 			$this->SetBuffer("Send_Message", "1");
-			$Response = shell_exec("adb connect ".$IP);  //Connect FireTV
+			$Response = shell_exec("adb connect ".$IP.":5555");  //Connect FireTV
 			$this->SendDebug("Connect FireTV", $Response, 0);
 			$Response = shell_exec($command);
 			$this->SendDebug("Send_Message", "IP: ".$IP." Command: ".$command." Response:".$Response, 0);
